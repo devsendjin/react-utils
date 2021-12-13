@@ -2,11 +2,9 @@
   "name": "react-utils",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/bundle.umd.js",
-  "module": "dist/bundle.esm.js",
-  "typings": "dist/index.d.ts",
+  "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup -c",
+    "build": "webpack --config './webpack.config.js'",
     "build-ts": "tsc",
     "serve": "browser-sync start --server './public' --files './public/**/*.(html|css|js)' --port 4000 --open --no-notify"
   },
@@ -15,26 +13,27 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/plugin-replace": "^3.0.0",
-    "@rollup/plugin-typescript": "^8.3.0",
+    "@babel/preset-env": "^7.16.4",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
-    "cross-env": "^7.0.3",
-    "rollup": "^2.61.1",
-    "rollup-plugin-scss": "^3.0.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "sass": "^1.45.0",
-    "typescript": "^4.5.3"
+    "babel-loader": "^8.2.3",
+    "css-loader": "^6.5.1",
+    "sass": "^1.44.0",
+    "sass-loader": "^12.4.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "classnames": "^2.3.1"
+    "classnames": "^2.3.1",
+    "react": "*",
+    "react-dom": "*"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "*",
+    "react-dom": "*"
   },
   "browserslist": [
     "defaults"
