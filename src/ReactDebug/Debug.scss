@@ -1,0 +1,135 @@
+.custom-debug {
+  position: fixed;
+  max-height: 100%;
+  background-color: rgba(#ddd, 0.9);
+  z-index: 999;
+  font-size: 12px;
+  max-width: 570px;
+  overflow: auto;
+
+  &:before {
+    content: '🕹';
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ddd;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .variable-row, .object-key-val {
+  	padding-left: 10px !important;
+  }
+
+  .pretty-json-container > .object-content > .object-key-val {
+  	padding-left: 0 !important;
+  }
+
+  .variable-row, .brace-row {
+    position: relative;
+
+    .click-to-edit, .click-to-remove, .copy-to-clipboard-container {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #fff;
+    }
+
+    .copy-to-clipboard-container {
+      right: 0;
+    }
+
+    .click-to-remove {
+      right: 20px;
+    }
+
+    .click-to-edit {
+      right: 40px;
+    }
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__button-box {
+    display: flex;
+  }
+
+  &__button {
+    display: block;
+    flex-grow: 1;
+    padding: 5px 0;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  &--minimized {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    overflow: hidden;
+
+    &:before {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &--hidden-scrollbar {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; // EDGE
+    &::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &--collapsed-strings {
+    .variable-row {
+      display: flex;
+
+      .click-to-edit-icon, .click-to-remove-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  // position
+  &--top-right {
+    top: 0;
+    right: 0;
+  }
+
+  &--bottom-right {
+    bottom: 0;
+    right: 0;
+  }
+
+  &--top-left {
+    top: 0;
+    left: 0;
+  }
+
+  &--bottom-left {
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.main_header {
+  z-index: -1 !important;
+}
