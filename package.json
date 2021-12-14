@@ -2,12 +2,14 @@
   "name": "react-utils",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.umd",
+  "types": "dist/index.d",
   "scripts": {
     "build": "webpack --config './webpack.config.js'",
     "build-ts": "tsc",
     "serve": "browser-sync start --server './public' --files './public/**/*.(html|css|js)' --port 4000 --open --no-notify"
   },
+  "files": ["./dist"],
   "keywords": [],
   "author": "Anatoliy Skichko",
   "license": "ISC",

@@ -2,59 +2,39 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  /*entry: './src/index.tsx',
+  entry: './src/index.ts',
   output: {
     filename: 'bundle.umd.js',
     path: path.resolve(__dirname, 'dist'),
+    library: 'react-utils',
     libraryTarget: 'umd',
     clean: true,
-  },*/
-
-  entry: {
-    // umd: {
-    //   import: './src/index.tsx',
-    //   library: {
-    //     name: 'ReactUtils',
-    //     type: 'umd',
-    //     umdNamedDefine: true,
-    //   },
-    // },
-    esm: {
-      import: './src/index.tsx',
-      library: {
-        // name: 'ReactUtils',
-        type: 'module',
-      },
-    },
-  },
-  output: {
-    filename: 'bundle.[name].js',
-    path: path.resolve(__dirname, 'dist'),
-    environment: {
-      module: true,
-    },
-    // libraryTarget: 'umd',
-    // library: {
-    //   name: 'ReactUtils',
-    // },
-    clean: true,
-  },
-
-  experiments: {
-    outputModule: true,
   },
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
+
+  devtool: 'source-map',
+
   externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM',
+    // 'react': 'React',
+    // 'react-dom': 'ReactDOM',
+  	'react': {
+	    root: 'React',
+	    commonjs: 'react',
+	    commonjs2: 'react',
+	  },
+	  'react-dom': {
+	    root: 'ReactDOM',
+	    commonjs: 'react-dom',
+	    commonjs2: 'react-dom',
+	  },
   },
   module: {
     rules: [
       {
-        test: /\.tsx$/,
+        test: /\.tsx?$/,
         use: [
           {
             loader: 'babel-loader',
@@ -67,26 +47,21 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.ts$/,
-        use: ['ts-loader'],
-        exclude: /node_modules/
-      },
-      {
         test: /\.s[ac]ss$/i,
         exclude: /node_modules/,
         use: [
-        	{ loader: 'style-loader' },
-	        {
-				    loader: 'css-loader',
-				    options: { sourceMap: true },
-				  },
-	        {
-						loader: 'sass-loader',
-			      options: {
-			        sourceMap: true,
-			        implementation: require('sass'),
-			      },
-	        }
+          {loader: 'style-loader'},
+          {
+            loader: 'css-loader',
+            options: {sourceMap: true},
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              implementation: require('sass'),
+            },
+          }
         ],
       },
     ]
