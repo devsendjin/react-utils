@@ -11,18 +11,18 @@ interface IDebugProps {
   collapsed?: boolean;
   isDefaultMinimized?: boolean;
   position?: 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
-  style?: any;
+  style?: React.CSSProperties;
 }
 
 const Debug: React.FC<IDebugProps> = ({
-  data,
+  data = {},
   componentName = '',
   trimmedStrings = true,
   collapsed = false,
   isDefaultMinimized = false,
   position = 'top-left', // top-right | bottom-right | top-left | bottom-left
   style = {},
-}) => {
+} = {}) => {
   const [isMinimized, setMinimize] = useState(isDefaultMinimized);
   const [isScrollbarVisible, setScrollbarVisibility] = useState(false);
 

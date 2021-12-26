@@ -7,7 +7,7 @@ interface IDebugProps {
     collapsed?: boolean;
     isDefaultMinimized?: boolean;
     position?: 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
-    style?: any;
+    style?: React.CSSProperties;
 }
 declare const Debug: React.FC<IDebugProps>;
 export { Debug };
