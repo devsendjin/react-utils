@@ -1,11 +1,49 @@
+// =========================================
+// custom scrollbar
+// =========================================
+@mixin customScrollbar(
+  $thumbColor: #009c0cd7,
+  $width: 10px,
+  $scrollbarBg: transparent,
+  $firefoxScrollbarBg: transparent
+) {
+  // Styles for Firefox not a lot of options we are able to set for custom scrollbars
+  // scrollbar-width: thin; // none | thin | auto
+  scrollbar-color: $thumbColor $firefoxScrollbarBg;
+
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-track-piece {
+    width: $width;
+    background: $scrollbarBg;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumbColor;
+    border-radius: 10px;
+
+    &:hover {
+      background: darken($thumbColor, 10%);
+    }
+
+    &:active {
+      background-color: darken($thumbColor, 20%);
+    }
+  }
+
+  // &::-webkit-scrollbar-corner {
+  //   background: #000;
+  // }
+}
+
 .custom-debug {
   position: fixed;
   max-height: 100%;
   background-color: rgba(#ddd, 0.9);
   z-index: 999;
   font-size: 12px;
-  max-width: 570px;
+  max-width: 400px;
   overflow: auto;
+  @include customScrollbar;
 
   &:before {
     content: '🕹';
@@ -24,47 +62,15 @@
     visibility: hidden;
   }
 
-  .variable-row, .object-key-val {
-  	padding-left: 10px !important;
-  }
-
-  .pretty-json-container > .object-content > .object-key-val {
-  	padding-left: 0 !important;
-  }
-
-  .variable-row, .brace-row {
-    position: relative;
-
-    .click-to-edit, .click-to-remove, .copy-to-clipboard-container {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: #fff;
-    }
-
-    .copy-to-clipboard-container {
-      right: 0;
-    }
-
-    .click-to-remove {
-      right: 20px;
-    }
-
-    .click-to-edit {
-      right: 40px;
-    }
-  }
-
-  &__title {
+  .title {
     font-weight: bold;
   }
 
-  &__button-box {
+  .button-box {
     display: flex;
   }
 
-  &__button {
+  .button {
     display: block;
     flex-grow: 1;
     padding: 5px 0;
@@ -73,7 +79,7 @@
     text-align: center;
   }
 
-  &--minimized {
+  &--is-minimized {
     width: 40px;
     height: 40px;
     cursor: pointer;
@@ -85,7 +91,7 @@
     }
   }
 
-  &--hidden-scrollbar {
+  &--is-scrollbar-hidden {
     -ms-overflow-style: none; /* Internet Explorer 10+ */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; // EDGE
@@ -96,7 +102,7 @@
     }
   }
 
-  &--collapsed-strings {
+  &--is-strings-collapsed {
     .variable-row {
       display: flex;
 
@@ -128,8 +134,4 @@
     bottom: 0;
     left: 0;
   }
-}
-
-.main_header {
-  z-index: -1 !important;
 }

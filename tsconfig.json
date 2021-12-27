@@ -1,26 +1,30 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "module": "ESNext",
+    "module": "es2015",
     "target": "ES5",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["ES2015", "ES2016", "ES2017", "DOM"],
     "jsx": "react",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "declaration": true,
-    "declarationDir": ".",
-    "emitDeclarationOnly": false,
-    "isolatedModules": false,
+    "declarationDir": "types",
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "strict": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
-    "sourceRoot": "src",
     "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
   },
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

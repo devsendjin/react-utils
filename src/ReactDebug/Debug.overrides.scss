@@ -1,0 +1,34 @@
+.custom-debug {
+  .variable-row, .object-key-val {
+  	padding-left: 10px !important;
+  }
+
+  .pretty-json-container > .object-content > .object-key-val {
+  	padding-left: 0 !important;
+  }
+
+  .variable-row, .brace-row, .object-meta-data {
+    position: relative;
+
+    .click-to-edit, .click-to-remove, .copy-to-clipboard-container {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #fff;
+      display: none;
+    }
+
+    .copy-to-clipboard-container {
+      right: 0;
+    }
+
+    .click-to-remove {
+      right: 20px;
+    }
+
+    .click-to-edit {
+      right: 40px;
+    }
+  }
+}

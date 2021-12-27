@@ -1,9 +1,9 @@
 import React from 'react';
-import './Debug.scss';
-interface IDebugProps {
+import { ReactJsonViewProps } from 'react-json-view';
+import './Debug.overrides.scss';
+interface IDebugProps extends Partial<ReactJsonViewProps> {
     data?: any;
     componentName?: string;
-    trimmedStrings?: boolean;
     collapsed?: boolean;
     isDefaultMinimized?: boolean;
     position?: 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
