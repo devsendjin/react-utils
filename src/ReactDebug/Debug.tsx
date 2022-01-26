@@ -35,7 +35,7 @@ const Debug: React.FC<IDebugProps> = ({
         styles[`custom-debug--${position}`],
         isMinimized && styles['custom-debug--is-minimized'],
         (!isScrollbarVisible || isMinimized) && styles['custom-debug--is-scrollbar-hidden'],
-        !!collapseStringsAfterLength && isMinimized && styles['custom-debug--is-strings-collapsed'],
+        !!collapseStringsAfterLength && isMinimized && styles['custom-debug--is-strings-collapsed']
       )}
       onClick={() => isMinimized && setMinimize(false)}
       style={style}

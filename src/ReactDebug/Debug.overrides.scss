@@ -1,16 +1,21 @@
 .custom-debug {
-  .variable-row, .object-key-val {
-  	padding-left: 10px !important;
+  .variable-row,
+  .object-key-val {
+    padding-left: 10px !important;
   }
 
   .pretty-json-container > .object-content > .object-key-val {
-  	padding-left: 0 !important;
+    padding-left: 0 !important;
   }
 
-  .variable-row, .brace-row, .object-meta-data {
+  .variable-row,
+  .brace-row,
+  .object-meta-data {
     position: relative;
 
-    .click-to-edit, .click-to-remove, .copy-to-clipboard-container {
+    .click-to-edit,
+    .click-to-remove,
+    .copy-to-clipboard-container {
       position: absolute;
       right: 0;
       top: 50%;

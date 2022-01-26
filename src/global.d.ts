@@ -3,23 +3,23 @@ declare const __PROD__: boolean;
 
 // for images
 declare module '*.jpeg' {
-  const content: string
+  const content: string;
   export default content;
 }
 declare module '*.jpg' {
-  const content: string
+  const content: string;
   export default content;
 }
 declare module '*.png' {
-  const content: string
+  const content: string;
   export default content;
 }
 declare module '*.webp' {
-  const content: string
+  const content: string;
   export default content;
 }
 declare module '*.avif' {
-  const content: string
+  const content: string;
   export default content;
 }
 declare module '*.svg' {

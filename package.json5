@@ -11,14 +11,37 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "start": "yarn clean && cross-env NODE_ENV=development yarn build:watch",
+
+    // build
     "build": "yarn clean && yarn build:rollup",
     "build:watch": "rollup -c './rollup.config.js' -w",
     "build:rollup": "rollup -c './rollup.config.js'",
+
+    // other
     "clean": "shx rm -rf './dist'",
     "prettier": "prettier --config \"./prettier.config.js\" --ignore-unknown --write \"./src/**/*\"",
-    "serve": "browser-sync start       --server './public'       --files './public/**/*.(html|css|js)'       --port 4000       --open       --no-notify",
-    "serve:dist": "browser-sync start       --server './dist'       --files './dist/**/*.(html|css|js)'       --port 4000       --open       --no-notify       --directory",
-    "json": "json5 --validate \"./package.json5\" &&       json5       --space 2       --out-file \"./package.json\"       \"./package.json5\""
+
+    // server
+    "serve": "browser-sync start \
+      --server './public' \
+      --files './public/**/*.(html|css|js)' \
+      --port 4000 \
+      --open \
+      --no-notify",
+    "serve:dist": "browser-sync start \
+      --server './dist' \
+      --files './dist/**/*.(html|css|js)' \
+      --port 4000 \
+      --open \
+      --no-notify \
+      --directory",
+
+    // utils
+    "json": "json5 --validate \"./package.json5\" && \
+      json5 \
+      --space 2 \
+      --out-file \"./package.json\" \
+      \"./package.json5\"",
   },
   "files": [
     "dist"
@@ -27,27 +50,38 @@
   "author": "Anatoliy Skichko",
   "license": "ISC",
   "devDependencies": {
+    // rollup
     "rollup": "^2.61.1",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
     "@rollup/plugin-typescript": "^8.3.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-postcss": "^4.0.2", // css
+    "rollup-plugin-terser": "^7.0.2", // js
+
+    // types
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+
+    // css/scss
     "autoprefixer": "^10.4.0",
     "postcss": "8.4.5",
     "postcss-preset-env": "^7.1.0",
     "sass": "^1.45.0",
-    "tslib": "^2.3.1",
+
+    // typescript
+    "tslib": "^2.3.1", // need for rollup
     "typescript": "^4.5.3",
+
+    // other
     "browser-sync": "^2.27.7",
+
+    // utils
     "prettier": "^2.5.1",
     "cross-env": "^7.0.3",
     "shx": "^0.3.3",
-    "json5": "^2.2.0"
+    "json5": "^2.2.0",
   },
   "dependencies": {
     "classnames": "^2.3.1",

@@ -113,7 +113,8 @@
     .variable-row {
       display: flex;
 
-      .click-to-edit-icon, .click-to-remove-icon {
+      .click-to-edit-icon,
+      .click-to-remove-icon {
         display: flex;
         align-items: center;
         justify-content: center;
