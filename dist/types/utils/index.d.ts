@@ -1,3 +1,12 @@
+declare type Scope = (callback: any, scopeName?: string, options?: {
+    divider?: boolean | string;
+}) => void;
+export declare const scope: Scope;
+declare type Primitive = string | number | bigint | boolean | symbol | null | undefined;
+declare type TL = (data: Primitive | Array<any> | {}, options?: {
+    formatted?: boolean;
+}) => void;
+export declare const l: TL;
 declare global {
     const scope: Scope;
     const l: TL;
@@ -6,15 +15,4 @@ declare global {
         l: TL;
     }
 }
-declare type Scope = (callback: any, scopeName?: string, options?: {
-    divider?: boolean | string;
-}) => void;
-export declare const scope: Scope;
-/**
- * modified console.log
- * @param {Object} obj
- * @returns [string, any]
- */
-declare type TL = (obj: any) => void;
-export declare const l: TL;
 export {};
