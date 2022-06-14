@@ -1,13 +1,20 @@
 import React from 'react';
 import { ReactJsonViewProps } from 'react-json-view';
 import './Debug.overrides.scss';
-interface IDebugProps extends Partial<ReactJsonViewProps> {
+declare type DebugProps = Partial<ReactJsonViewProps> & {
     data?: any;
     componentName?: string;
     collapsed?: boolean;
     isDefaultMinimized?: boolean;
     position?: 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
-    style?: any;
+    style?: React.CSSProperties;
+};
+declare const Debug: React.FC<DebugProps>;
+declare const debugImpl: (data: DebugProps['data'], restProps?: Omit<DebugProps, 'data'>) => ReturnType<React.FC<DebugProps>>;
+declare global {
+    const debug: typeof debugImpl;
+    interface Window {
+        debug: typeof debugImpl;
+    }
 }
-declare const Debug: React.FC<IDebugProps>;
-export { Debug };
+export { Debug, debugImpl as debug };

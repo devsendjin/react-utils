@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "module": "es2015",
-    "target": "ES5",
-    "lib": ["ES2015", "ES2016", "ES2017", "DOM"],
+    "module": "ESNext",
+    "target": "ES3",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react",
     "moduleResolution": "node",
     "declaration": true,
@@ -21,9 +21,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

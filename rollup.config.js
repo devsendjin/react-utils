@@ -4,6 +4,7 @@ import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 
+import analyze from 'rollup-plugin-analyzer';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
@@ -57,14 +58,15 @@ export default defineConfig({
     nodeResolve({
       browser: true,
     }),
+    commonjs({
+      sourceMap: true,
+    }),
     typescript({
       tsconfig: './tsconfig.json',
       exclude: ['node_modules'],
     }),
-    commonjs({
-      sourceMap: true,
-    }),
     postcss({
+      sourceMap: 'inline',
       extract: false,
       modules: {
         generateScopedName: __PROD__ ? '[hash:base64:6]' : '[local]--[hash:base64:5]',
@@ -96,12 +98,17 @@ export default defineConfig({
           preamble: null, // null by default. When passed it must be a string and it will be prepended to the output literally. The source map will adjust for this text. Can be used to insert a comment containing licensing information, for example.
           quote_style: 3, // 0 by default. 3 - always use the original quotes.
           preserve_annotations: false, // false by default.
-          ecma: 2020, // 5 by default. Desired EcmaScript standard version for output.
+          ecma: 2019, // 5 by default. Desired EcmaScript standard version for output.
         },
-        ecma: 2020, // 5 by default. Desired EcmaScript standard version for output.
+        ecma: 2019, // 5 by default. Desired EcmaScript standard version for output.
         keep_classnames: false, // undefined by default.
         keep_fnames: false, // false by default.
         safari10: false, // false by default.
+      }),
+    __PROD__ &&
+      analyze({
+        hideDeps: true,
+        summaryOnly: true,
       }),
   ].filter(Boolean),
 });

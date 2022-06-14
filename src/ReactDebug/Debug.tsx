@@ -4,24 +4,24 @@ import ReactJson, { ReactJsonViewProps } from 'react-json-view';
 import styles from './Debug.module.scss';
 import './Debug.overrides.scss';
 
-interface IDebugProps extends Partial<ReactJsonViewProps> {
+type DebugProps = Partial<ReactJsonViewProps> & {
   data?: any;
   componentName?: string;
   collapsed?: boolean;
   isDefaultMinimized?: boolean;
   position?: 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
-  style?: any;
-}
+  style?: React.CSSProperties;
+};
 
-const Debug: React.FC<IDebugProps> = ({
+const Debug: React.FC<DebugProps> = ({
   data,
   componentName = '',
   isDefaultMinimized = false,
-  position = 'top-left', // top-right | bottom-right | top-left | bottom-left
-  name = false,
+  position = 'top-right', // top-right | bottom-right | top-left | bottom-left
+  name = null,
   collapseStringsAfterLength = 30,
   collapsed = false,
-  style = {},
+  style,
   ...restJsonViewProps
 }) => {
   const [isMinimized, setMinimize] = useState(isDefaultMinimized);
@@ -55,15 +55,13 @@ const Debug: React.FC<IDebugProps> = ({
       )}
 
       <ReactJson
-        src={data}
+        src={data ?? {}}
         name={name}
         theme="flat"
         iconStyle="square"
         indentWidth={4}
         collapseStringsAfterLength={collapseStringsAfterLength}
         collapsed={collapsed}
-        onEdit={() => {}}
-        onDelete={() => {}}
         {...restJsonViewProps}
       />
     </div>
@@ -72,4 +70,20 @@ const Debug: React.FC<IDebugProps> = ({
 
 Debug.displayName = 'Debug';
 
-export { Debug };
+const debugImpl = (
+  data: DebugProps['data'],
+  restProps: Omit<DebugProps, 'data'> = {}
+): ReturnType<React.FC<DebugProps>> => {
+  return <Debug data={data} {...restProps} />;
+};
+
+declare global {
+  const debug: typeof debugImpl;
+  interface Window {
+    debug: typeof debugImpl;
+  }
+}
+
+window.debug = debugImpl;
+
+export { Debug, debugImpl as debug };

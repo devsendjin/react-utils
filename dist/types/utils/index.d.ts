@@ -1,15 +1,15 @@
 declare global {
-    const scope: TScope;
+    const scope: Scope;
     const l: TL;
     interface Window {
-        scope: TScope;
+        scope: Scope;
         l: TL;
     }
 }
-declare type TScope = (callback: any, scopeName?: string, options?: {
+declare type Scope = (callback: any, scopeName?: string, options?: {
     divider?: boolean | string;
 }) => void;
-export declare const scope: TScope;
+export declare const scope: Scope;
 /**
  * modified console.log
  * @param {Object} obj

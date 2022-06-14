@@ -1,14 +1,15 @@
 declare global {
-  const scope: TScope;
+  const scope: Scope;
   const l: TL;
+
   interface Window {
-    scope: TScope;
+    scope: Scope;
     l: TL;
   }
 }
 
-type TScope = (callback: any, scopeName?: string, options?: { divider?: boolean | string }) => void;
-export const scope: TScope = (callback, scopeName = 'Scope', { divider = '' } = {}) => {
+type Scope = (callback: any, scopeName?: string, options?: { divider?: boolean | string }) => void;
+export const scope: Scope = (callback, scopeName = 'Scope', { divider = '' } = {}) => {
   if (divider) console.log(divider);
   console.group(scopeName);
   if (callback) callback();
