@@ -13,8 +13,11 @@ const isPrimitive = (value: unknown): boolean => {
 
 type Primitive = string | number | bigint | boolean | symbol | null | undefined;
 
-type TL = (data: Primitive | Array<any> | {}, options?: { formatted?: boolean }) => void;
-export const l: TL = (data, { formatted = true } = {}) => {
+type TL = (
+  data: Primitive | Array<any> | {},
+  options?: { formatted?: boolean; excludeByValue?: any[]; excludeByType?: string[] }
+) => void;
+export const l: TL = (data, { formatted = true, excludeByValue = [], excludeByType = [] } = {}) => {
   if (!data) {
     console.log(data);
     return;
@@ -37,7 +40,9 @@ export const l: TL = (data, { formatted = true } = {}) => {
   const maxKeyLength = maxLengthKeyName.length;
 
   const logArgs = Object.entries(data).reduce((acc: any, [key, value], index) => {
-    acc.push(`${index === 0 ? '' : '\n'}${formatted ? key.padEnd(maxKeyLength, ' ') : key} ⮕ `, value);
+    if (!excludeByType.includes(typeof value) && !excludeByValue.some((excludedValue) => excludedValue === value)) {
+      acc.push(`${index === 0 ? '' : '\n'}${formatted ? key.padEnd(maxKeyLength, ' ') : key} ⮕ `, value);
+    }
     return acc;
   }, []);
 
