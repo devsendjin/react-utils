@@ -13,11 +13,11 @@ const isPrimitive = (value: unknown): boolean => {
 
 type Primitive = string | number | bigint | boolean | symbol | null | undefined;
 
-type TL = (
+type Logger = (
   data: Primitive | Array<any> | {},
   options?: { formatted?: boolean; excludeByValue?: any[]; excludeByType?: string[] }
 ) => void;
-export const l: TL = (data, { formatted = true, excludeByValue = [], excludeByType = [] } = {}) => {
+export const l: Logger = (data, { formatted = true, excludeByValue = [], excludeByType = [] } = {}) => {
   if (!data) {
     console.log(data);
     return;
@@ -49,15 +49,22 @@ export const l: TL = (data, { formatted = true, excludeByValue = [], excludeByTy
   console.log(...logArgs);
 };
 
+const dl: Logger = (data, options) => {
+  l(data, { excludeByType: ['function'], ...options });
+};
+
 window.scope = scope;
 window.l = l;
+window.dl = dl;
 
 declare global {
   const scope: Scope;
-  const l: TL;
+  const l: Logger;
+  const dl: Logger;
 
   interface Window {
     scope: Scope;
-    l: TL;
+    l: Logger;
+    dl: Logger;
   }
 }
