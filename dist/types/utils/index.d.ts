@@ -4,16 +4,16 @@ declare type Scope = (callback: any, scopeName?: string, options?: {
 export declare const scope: Scope;
 declare type Primitive = string | number | bigint | boolean | symbol | null | undefined;
 declare type LoggerData = Primitive | Array<any> | Map<any, any> | {};
+declare type LoggerLabel = string | Function;
 declare type LoggerOptions = {
     formatted?: boolean;
     excludeByKey?: string[];
     excludeByValue?: any[];
     excludeByType?: string[];
-    label?: string;
-    scopeName?: string;
+    scopeName?: LoggerLabel;
     dividerChar?: string | number;
 };
-declare type Logger = (data: LoggerData, options?: LoggerOptions) => void;
+declare type Logger = (data: LoggerData, label?: LoggerLabel, options?: LoggerOptions) => void;
 export declare const l: Logger;
 export declare const dl: Logger;
 export declare const setup: () => void;

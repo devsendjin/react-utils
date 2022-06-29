@@ -17,22 +17,26 @@ const isMap = (value: any): value is Map<any, any> => {
   );
 };
 
-type LogWithLabel = (data: unknown[], label?: LoggerOptions['label']) => void;
+const drawContextTitle = (label: LoggerLabel = ''): string => {
+  return typeof label === 'function' ? label.name : label;
+};
+
+type LogWithLabel = (data: unknown[], label?: LoggerLabel) => void;
 const logWithLabel: LogWithLabel = (data, label) => {
   if (label) {
-    console.log(`%c${label}`, 'color: green; font-size: 18px', ...data);
+    console.log(`%c${drawContextTitle(label)}`, 'color: green; font-size: 18px', ...data);
     return;
   }
 
   console.log(...data);
 };
 
-type LogImpl = (data: unknown[], options: Pick<LoggerOptions, 'label' | 'scopeName'>) => void;
+type LogImpl = (data: unknown[], options: { label: LoggerLabel } & Pick<LoggerOptions, 'scopeName'>) => void;
 const logImpl: LogImpl = (data: unknown[], { label, scopeName }): void => {
   if (scopeName) {
     scope(() => {
       logWithLabel(data, label);
-    }, scopeName);
+    }, drawContextTitle(scopeName));
     return;
   }
   logWithLabel(data, label);
@@ -40,26 +44,26 @@ const logImpl: LogImpl = (data: unknown[], { label, scopeName }): void => {
 
 type Primitive = string | number | bigint | boolean | symbol | null | undefined;
 type LoggerData = Primitive | Array<any> | Map<any, any> | {};
+type LoggerLabel = string | Function;
 type LoggerOptions = {
   formatted?: boolean;
   excludeByKey?: string[];
   excludeByValue?: any[];
   excludeByType?: string[];
-  label?: string;
-  scopeName?: string;
+  scopeName?: LoggerLabel;
   dividerChar?: string | number;
 };
 
-type Logger = (data: LoggerData, options?: LoggerOptions) => void;
+type Logger = (data: LoggerData, label?: LoggerLabel, options?: LoggerOptions) => void;
 export const l: Logger = (
   data,
+  label = '',
   {
     formatted = true,
     excludeByKey = [],
     excludeByValue = [],
     excludeByType = [],
-    label,
-    scopeName,
+    scopeName = '',
     dividerChar = '⮕',
   } = {}
 ) => {
@@ -103,8 +107,8 @@ export const l: Logger = (
   logImpl(logArgsFromObj, { label, scopeName });
 };
 
-export const dl: Logger = (data, options) => {
-  l(data, { excludeByType: ['function'], ...options });
+export const dl: Logger = (data, label, options) => {
+  l(data, label, { excludeByType: ['function'], ...options });
 };
 
 export const setup = () => {
