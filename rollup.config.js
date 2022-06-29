@@ -16,7 +16,11 @@ const __PROD__ = MODE === 'production';
 
 console.log({ __PROD__, MODE });
 
-const globals = { react: 'React', 'react-dom': 'ReactDOM' };
+const globals = {
+  react: 'React',
+  'react-dom': 'ReactDOM',
+  'react/jsx-runtime': 'jsxRuntime',
+};
 
 export default defineConfig({
   input: 'src/index.ts',

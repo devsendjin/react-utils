@@ -1,13 +1,13 @@
 {
   "name": "react-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Package for comfortable debugging react application",
-  "main": "dist/index.esm.js",
-  "module": "dist/index.cjs.mjs",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "umd:main": "dist/index.umd.js",
   "unpkg": "dist/index.umd.js",
   "jsdelivr": "dist/index.umd.js",
-  "jsnext:main": "dist/index.esm.mjs",
+  "jsnext:main": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "start": "pnpm clean && cross-env NODE_ENV=development pnpm build:watch",
