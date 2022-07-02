@@ -1,2 +1,1 @@
-export { Debug, debug } from './ReactDebug';
-export { scope, l, dl, setup } from './utils';
+export { scope, l, dl, setup } from './shared';

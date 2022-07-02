@@ -11,10 +11,4 @@ declare type DebugProps = Partial<ReactJsonViewProps> & {
 };
 declare const Debug: React.FC<DebugProps>;
 declare const debugImpl: (data: DebugProps['data'], restProps?: Omit<DebugProps, 'data'>) => ReturnType<React.FC<DebugProps>>;
-declare global {
-    const debug: typeof debugImpl;
-    interface Window {
-        debug: typeof debugImpl;
-    }
-}
-export { Debug, debugImpl as debug };
+export { Debug, debugImpl };

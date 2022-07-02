@@ -24,7 +24,7 @@ const Debug: React.FC<DebugProps> = ({
   style,
   ...restJsonViewProps
 }) => {
-  const [isMinimized, setMinimize] = useState(isDefaultMinimized);
+  const [isMinimized, setMinimize] = useState(() => isDefaultMinimized);
   const [isScrollbarVisible, setScrollbarVisibility] = useState(false);
 
   return (
@@ -77,13 +77,4 @@ const debugImpl = (
   return <Debug data={data} {...restProps} />;
 };
 
-declare global {
-  const debug: typeof debugImpl;
-  interface Window {
-    debug: typeof debugImpl;
-  }
-}
-
-window.debug = debugImpl;
-
-export { Debug, debugImpl as debug };
+export { Debug, debugImpl };

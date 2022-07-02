@@ -1,21 +1,4 @@
-type Scope = (callback: any, scopeName?: string, options?: { divider?: boolean | string }) => void;
-export const scope: Scope = (callback, scopeName = 'Scope', { divider = '' } = {}) => {
-  if (divider) console.log(divider);
-  console.group(scopeName);
-  if (callback) callback();
-  console.groupEnd();
-};
-
-const isPrimitive = (value: unknown): boolean => {
-  const type = typeof value;
-  return value == null || (type != 'object' && type != 'function');
-};
-
-const isMap = (value: any): value is Map<any, any> => {
-  return ['clear', 'delete', 'entries', 'forEach', 'get', 'has', 'keys', 'set', 'size', 'values'].every(
-    (v) => v in value
-  );
-};
+import { isMap, isPrimitive } from './internal';
 
 const drawContextTitle = (label: LoggerLabel = ''): string => {
   return typeof label === 'function' ? label.name : label;
@@ -55,7 +38,7 @@ type LoggerOptions = {
 };
 
 type Logger = (data: LoggerData, label?: LoggerLabel, options?: LoggerOptions) => void;
-export const l: Logger = (
+const l: Logger = (
   data,
   label = '',
   {
@@ -107,24 +90,10 @@ export const l: Logger = (
   logImpl(logArgsFromObj, { label, scopeName });
 };
 
-export const dl: Logger = (data, label, options) => {
-  l(data, label, { excludeByType: ['function'], ...options });
+// preset without 'function type'
+const dl: Logger = (data, label, { excludeByType = [], ...restOptions } = {}) => {
+  l(data, label, { excludeByType: ['function', ...excludeByType], ...restOptions });
 };
 
-export const setup = () => {
-  window.scope = scope;
-  window.l = l;
-  window.dl = dl;
-};
-
-declare global {
-  const scope: Scope;
-  const l: Logger;
-  const dl: Logger;
-
-  interface Window {
-    scope: Scope;
-    l: Logger;
-    dl: Logger;
-  }
-}
+export type { Logger };
+export { l, dl };

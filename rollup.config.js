@@ -16,37 +16,13 @@ const __PROD__ = MODE === 'production';
 
 console.log({ __PROD__, MODE });
 
-const globals = {
+const reactGlobals = {
   react: 'React',
   'react-dom': 'ReactDOM',
   'react/jsx-runtime': 'jsxRuntime',
 };
 
-export default defineConfig({
-  input: 'src/index.ts',
-
-  output: [
-    {
-      file: 'dist/index.cjs.js',
-      format: 'cjs',
-      sourcemap: true,
-      globals,
-    },
-    {
-      file: 'dist/index.esm.js',
-      format: 'esm',
-      sourcemap: true,
-      globals,
-    },
-    {
-      file: 'dist/index.umd.js',
-      name: 'ReactUtils',
-      format: 'umd',
-      sourcemap: true,
-      globals,
-    },
-  ],
-
+const rollupSharedConfig = {
   watch: {
     clearScreen: true,
     exclude: 'node_modules/**',
@@ -64,10 +40,6 @@ export default defineConfig({
     }),
     commonjs({
       sourceMap: true,
-    }),
-    typescript({
-      tsconfig: './tsconfig.json',
-      exclude: ['node_modules'],
     }),
     postcss({
       sourceMap: 'inline',
@@ -115,4 +87,74 @@ export default defineConfig({
         summaryOnly: true,
       }),
   ].filter(Boolean),
-});
+};
+
+export default defineConfig([
+  {
+    input: 'src/react.ts',
+
+    output: [
+      {
+        file: 'dist/react.cjs.js',
+        format: 'cjs',
+        sourcemap: true,
+      },
+      {
+        file: 'dist/react.esm.js',
+        format: 'esm',
+        sourcemap: true,
+      },
+      {
+        file: 'dist/react.umd.js',
+        name: 'DevUtils',
+        format: 'umd',
+        sourcemap: true,
+      },
+    ],
+
+    watch: rollupSharedConfig.watch,
+
+    plugins: [
+      typescript({
+        tsconfig: './tsconfig.json',
+        exclude: ['node_modules'],
+      }),
+      ...rollupSharedConfig.plugins,
+    ],
+  },
+  {
+    input: 'src/index.ts',
+
+    output: [
+      {
+        file: 'dist/index.cjs.js',
+        format: 'cjs',
+        sourcemap: true,
+        globals: reactGlobals,
+      },
+      {
+        file: 'dist/index.esm.js',
+        format: 'esm',
+        sourcemap: true,
+        globals: reactGlobals,
+      },
+      {
+        file: 'dist/index.umd.js',
+        name: 'ReactDevUtils',
+        format: 'umd',
+        sourcemap: true,
+        globals: reactGlobals,
+      },
+    ],
+
+    watch: rollupSharedConfig.watch,
+
+    plugins: [
+      typescript({
+        tsconfig: './tsconfig.json',
+        exclude: ['node_modules'],
+      }),
+      ...rollupSharedConfig.plugins,
+    ],
+  },
+]);
