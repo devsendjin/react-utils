@@ -1,6 +1,6 @@
 {
   "name": "react-utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Package for comfortable debugging react application",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",

@@ -16,7 +16,6 @@ declare type LoggerOptions = {
 declare type Logger = (data: LoggerData, label?: LoggerLabel, options?: LoggerOptions) => void;
 export declare const l: Logger;
 export declare const dl: Logger;
-export declare const setup: () => void;
 declare global {
     const scope: Scope;
     const l: Logger;

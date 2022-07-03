@@ -111,11 +111,9 @@ export const dl: Logger = (data, label, options) => {
   l(data, label, { excludeByType: ['function'], ...options });
 };
 
-export const setup = () => {
-  window.scope = scope;
-  window.l = l;
-  window.dl = dl;
-};
+window.scope = scope;
+window.l = l;
+window.dl = dl;
 
 declare global {
   const scope: Scope;
