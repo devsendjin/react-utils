@@ -2,13 +2,15 @@
   "name": "react-utils",
   "version": "1.0.2",
   "description": "Package for comfortable debugging react application",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
-  "umd:main": "dist/index.umd.js",
-  "unpkg": "dist/index.umd.js",
-  "jsdelivr": "dist/index.umd.js",
-  "jsnext:main": "dist/index.esm.js",
-  "types": "dist/types/index.d.ts",
+  "main": "./dist/index.cjs.js",
+  "exports": {
+    "require": "./dist/index.cjs.js",
+    "node": "./dist/index.cjs.js",
+    "import": "./dist/index.esm.js",
+    "default": "./dist/index.esm.js"
+  },
+  "umd:main": "./dist/index.umd.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "start": "pnpm clean && cross-env NODE_ENV=development pnpm build:watch",
 
@@ -53,43 +55,44 @@
   "license": "ISC",
   "devDependencies": {
     // rollup
-    "rollup": "^2.75.6",
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
+    "rollup": "^2.79.1",
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-typescript": "^8.3.3",
+    "@rollup/plugin-typescript": "^8.5.0",
+    "@rollup/plugin-babel": "^6.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2", // css
     "rollup-plugin-terser": "^7.0.2", // js
     "rollup-plugin-analyzer": "^4.0.0",
-    "@rollup/plugin-babel": "^5.3.1",
 
     // types
     "@types/react": "^17.0.45",
     "@types/react-dom": "^17.0.17",
 
     // css/scss
-    "autoprefixer": "^10.4.7",
-    "postcss": "^8.4.14",
-    "postcss-preset-env": "^7.7.1",
-    "sass": "^1.52.3",
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.17",
+    "postcss-preset-env": "^7.8.2",
+    "sass": "^1.55.0",
 
     // typescript
     "tslib": "^2.4.0", // need for rollup
-    "typescript": "^4.7.3",
+    "typescript": "^4.8.4",
+    "@babel/core": "^7.0.0",
 
     // other
     "browser-sync": "^2.27.10",
 
     // utils
-    "prettier": "^2.6.2",
+    "prettier": "^2.7.1",
     "cross-env": "^7.0.3",
     "rimraf": "^3.0.2",
     "json5": "^2.2.1",
     "npm-run-all": "^4.1.5"
   },
   "dependencies": {
-    "classnames": "^2.3.1",
+    "classnames": "^2.3.2",
     "react-json-view": "^1.21.3"
   },
   "peerDependencies": {
