@@ -1,85 +1,67 @@
-type Scope = (callback: any, scopeName?: string, options?: { divider?: boolean | string }) => void;
-export const scope: Scope = (callback, scopeName = 'Scope', { divider = '' } = {}) => {
-  if (divider) console.log(divider);
-  console.group(scopeName);
-  if (callback) callback();
-  console.groupEnd();
-};
+import { ScopeLogger, LoggerScopeName, LogImpl, Logger } from './types';
 
 const isPrimitive = (value: unknown): boolean => {
   const type = typeof value;
   return value == null || (type != 'object' && type != 'function');
 };
 
-const isMap = (value: any): value is Map<any, any> => {
-  return ['clear', 'delete', 'entries', 'forEach', 'get', 'has', 'keys', 'set', 'size', 'values'].every(
-    (v) => v in value
-  );
+const isMap = (value: any): value is Map<any, any> => value instanceof Map;
+const isSet = (value: any): value is Set<any> => value instanceof Set;
+
+const getScopeName = (context: LoggerScopeName = ''): string => {
+  return typeof context === 'function' ? context.name : context;
 };
 
-const drawContextTitle = (label: LoggerLabel = ''): string => {
-  return typeof label === 'function' ? label.name : label;
+const scopeLogger: ScopeLogger = (callback, name = 'Scope', { nameStyle } = {}) => {
+  const consoleGroupArgs = nameStyle ? [`%c${name}`, nameStyle] : [name];
+  if (nameStyle) {
+    console.group(...consoleGroupArgs);
+  } else {
+    console.group(...consoleGroupArgs);
+  }
+  if (callback) callback();
+  console.groupEnd();
 };
 
-type LogWithLabel = (data: unknown[], label?: LoggerLabel) => void;
-const logWithLabel: LogWithLabel = (data, label) => {
-  if (label) {
-    console.log(`%c${drawContextTitle(label)}`, 'color: green; font-size: 18px', ...data);
+const logImplementation: LogImpl = (data: unknown[], { scope, scopeCallback, scopeOptions }): void => {
+  if (scope) {
+    const scopeName = getScopeName(scope);
+
+    scopeLogger(
+      () => {
+        console.log(...data);
+
+        scopeCallback?.({ scopeName });
+      },
+      scopeName,
+      scopeOptions
+    );
     return;
   }
 
   console.log(...data);
 };
 
-type LogImpl = (data: unknown[], options: { label: LoggerLabel } & Pick<LoggerOptions, 'scopeName'>) => void;
-const logImpl: LogImpl = (data: unknown[], { label, scopeName }): void => {
-  if (scopeName) {
-    scope(() => {
-      logWithLabel(data, label);
-    }, drawContextTitle(scopeName));
-    return;
-  }
-  logWithLabel(data, label);
-};
-
-type Primitive = string | number | bigint | boolean | symbol | null | undefined;
-type LoggerData = Primitive | Array<any> | Map<any, any> | {};
-type LoggerLabel = string | Function;
-type LoggerOptions = {
-  formatted?: boolean;
-  excludeByKey?: string[];
-  excludeByValue?: any[];
-  excludeByType?: string[];
-  scopeName?: LoggerLabel;
-  dividerChar?: string | number;
-};
-
-type Logger = (data: LoggerData, label?: LoggerLabel, options?: LoggerOptions) => void;
-export const l: Logger = (
-  data,
-  label = '',
-  {
+const logger: Logger = (data, options = {}) => {
+  const {
     formatted = true,
     excludeByKey = [],
     excludeByValue = [],
     excludeByType = [],
-    scopeName = '',
-    dividerChar = '⮕',
-  } = {}
-) => {
-  const firstLineBreakInNonObject = label ? '\n' : '';
-  if (!data) {
-    logImpl([firstLineBreakInNonObject, data], { label, scopeName });
-    return;
-  }
+    reversed = false,
+    dividerChar = reversed ? '⬅' : '⮕',
 
-  if (Array.isArray(data)) {
-    logImpl([`${firstLineBreakInNonObject}Array ${dividerChar} `, data], { label, scopeName });
-    return;
-  }
+    debug = false,
 
-  if (isPrimitive(data) || isMap(data)) {
-    logImpl([firstLineBreakInNonObject, data], { label, scopeName });
+    scope = '',
+    scopeCallback,
+    scopeOptions,
+  } = options;
+
+  const sharedScopeLoggerParams = { scope, scopeCallback, scopeOptions };
+
+  if (!data || Array.isArray(data) || isPrimitive(data) || isMap(data) || isSet(data)) {
+    logImplementation([data], sharedScopeLoggerParams);
     return;
   }
 
@@ -89,40 +71,44 @@ export const l: Logger = (
 
   const maxKeyLength = maxLengthKeyName.length;
 
-  const isValueOfType = (value: unknown) => excludeByType.includes(typeof value);
-  const isSomeKeyEqualsTo = (key: string) => excludeByKey.some((excludedkey) => excludedkey === key);
-  const isSomeValueEqualsTo = (value: unknown) => excludeByValue.some((excludedValue) => excludedValue === value);
+  const isExcludedType = (value: unknown) => excludeByType.includes(typeof value);
+  const isExcludedKey = (key: string) => excludeByKey.some((excludedkey) => excludedkey === key);
+  const isExcludedValue = (value: unknown) => excludeByValue.some((excludedValue) => excludedValue === value);
 
   const logArgsFromObj = Object.entries(data).reduce<unknown[]>((acc, [key, value], index) => {
-    if (!isValueOfType(value) && !isSomeValueEqualsTo(value) && !isSomeKeyEqualsTo(key)) {
-      const withFirstElementLineBreak = index === 0 && !label;
-      acc.push(
-        `${withFirstElementLineBreak ? '' : '\n'}${formatted ? key.padEnd(maxKeyLength, ' ') : key} ${dividerChar} `,
-        value
-      );
+    if (!isExcludedType(value) && !isExcludedKey(value) && !isExcludedValue(key)) {
+      const withFirstElementLineBreak = index === 0;
+      const firstLineBreakValue = withFirstElementLineBreak ? '' : '\n';
+
+      if (reversed) {
+        acc.push(firstLineBreakValue, value, ` ${dividerChar} ${key}`);
+      } else {
+        const keyName = formatted ? key.padEnd(maxKeyLength, ' ') : key;
+        acc.push(`${firstLineBreakValue}${keyName} ${dividerChar} `, value);
+      }
     }
     return acc;
   }, []);
 
-  logImpl(logArgsFromObj, { label, scopeName });
-};
-
-export const dl: Logger = (data, label, options) => {
-  l(data, label, { excludeByType: ['function'], ...options });
-};
-
-window.scope = scope;
-window.l = l;
-window.dl = dl;
-
-declare global {
-  const scope: Scope;
-  const l: Logger;
-  const dl: Logger;
-
-  interface Window {
-    scope: Scope;
-    l: Logger;
-    dl: Logger;
+  if (debug) {
+    logImplementation(logArgsFromObj, {
+      scope,
+      scopeCallback: (...scopeCallbackParams) => {
+        logImplementation([{ options }], {
+          scope: scope ? `[${scope}] debug info:` : 'Scope debug info',
+          scopeOptions: { nameStyle: 'color: yellow;' },
+        });
+        scopeCallback?.(...scopeCallbackParams);
+      },
+      scopeOptions,
+    });
+  } else {
+    logImplementation(logArgsFromObj, sharedScopeLoggerParams);
   }
-}
+};
+
+const excludeFunctionLogger: Logger = (data, options) => {
+  logger(data, { excludeByType: ['function'], ...options });
+};
+
+export { logger, excludeFunctionLogger };
