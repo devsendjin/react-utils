@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import cn from 'classnames';
 import ReactJson, { ReactJsonViewProps } from 'react-json-view';
 import styles from './Debug.module.scss';
 import './Debug.overrides.scss';
 
+type ComponentName = string | Function;
 type DebugProps = Partial<ReactJsonViewProps> & {
   data?: any;
-  componentName?: string;
+  componentName?: string | Function;
   collapsed?: boolean;
   isDefaultMinimized?: boolean;
   position?: 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left';
   style?: React.CSSProperties;
+  showRenderCount?: boolean;
+};
+
+const getComponentName = (context: ComponentName): string => {
+  return typeof context === 'function' ? context.name : context;
 };
 
 const Debug: React.FC<DebugProps> = ({
@@ -21,26 +27,32 @@ const Debug: React.FC<DebugProps> = ({
   name = null,
   collapseStringsAfterLength = 30,
   collapsed = false,
+  showRenderCount = false,
   style,
   ...restJsonViewProps
 }) => {
+  const classNamePrefix = 'custom-debug';
+  const componentNameValue = getComponentName(componentName);
+
   const [isMinimized, setMinimize] = useState(isDefaultMinimized);
   const [isScrollbarVisible, setScrollbarVisibility] = useState(false);
+  const renderCount = useRef(0);
+  renderCount.current++;
 
   return (
     <div
       className={cn(
-        'custom-debug',
-        styles['custom-debug'],
-        styles[`custom-debug--${position}`],
-        isMinimized && styles['custom-debug--is-minimized'],
-        (!isScrollbarVisible || isMinimized) && styles['custom-debug--is-scrollbar-hidden'],
-        !!collapseStringsAfterLength && isMinimized && styles['custom-debug--is-strings-collapsed']
+        classNamePrefix,
+        styles[classNamePrefix],
+        styles[`${classNamePrefix}--${position}`],
+        isMinimized && styles[`${classNamePrefix}--is-minimized`],
+        (!isScrollbarVisible || isMinimized) && styles[`${classNamePrefix}--is-scrollbar-hidden`],
+        !!collapseStringsAfterLength && isMinimized && styles[`${classNamePrefix}--is-strings-collapsed`]
       )}
       onClick={() => isMinimized && setMinimize(false)}
       style={style}
     >
-      <div className={styles['button-box']}>
+      <div className={styles['row']}>
         <button type="button" className={styles['button']} onClick={() => setMinimize(true)}>
           Hide panel
         </button>
@@ -48,10 +60,18 @@ const Debug: React.FC<DebugProps> = ({
           Toggle scrollbar
         </button>
       </div>
-      {componentName && (
-        <>
-          component: <span className={styles['title']}>{componentName}</span>
-        </>
+      {componentNameValue && (
+        <div className={cn(styles['row'], styles['compoenent-name'])}>
+          component:&nbsp;
+          <span className={styles['text-bold']}>{componentNameValue}</span>
+        </div>
+      )}
+
+      {showRenderCount && (
+        <div className={cn(styles['row'], styles['render-count'])}>
+          Render count:&nbsp;
+          <span className={styles['text-bold']}>{renderCount.current}</span>
+        </div>
       )}
 
       <ReactJson
@@ -70,20 +90,11 @@ const Debug: React.FC<DebugProps> = ({
 
 Debug.displayName = 'Debug';
 
-const debugImpl = (
+const debugImplelentation = (
   data: DebugProps['data'],
   restProps: Omit<DebugProps, 'data'> = {}
 ): ReturnType<React.FC<DebugProps>> => {
   return <Debug data={data} {...restProps} />;
 };
 
-declare global {
-  const debug: typeof debugImpl;
-  interface Window {
-    debug: typeof debugImpl;
-  }
-}
-
-window.debug = debugImpl;
-
-export { Debug, debugImpl as debug };
+export { Debug, debugImplelentation };

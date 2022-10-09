@@ -1,4 +1,5 @@
 import { Logger } from './utils/types';
+import { Debug, debugImplelentation } from './ReactDebug';
 declare global {
     const l: Logger;
     const dl: Logger;
@@ -6,6 +7,9 @@ declare global {
         l: Logger;
         dl: Logger;
     }
+    const debug: typeof debugImplelentation;
+    interface Window {
+        debug: typeof debugImplelentation;
+    }
 }
-export { logger, excludeFunctionLogger } from './utils';
-export { Debug, debug } from './ReactDebug';
+export { Debug };

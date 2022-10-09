@@ -76,12 +76,17 @@
     visibility: hidden;
   }
 
-  .title {
+  .row {
+    display: flex;
+  }
+
+  .text-bold {
     font-weight: bold;
   }
 
-  .button-box {
-    display: flex;
+  .compoenent-name,
+  .render-count  {
+    color: #000;
   }
 
   .button {
