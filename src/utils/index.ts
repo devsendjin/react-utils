@@ -1,4 +1,4 @@
-import { ScopeLogger, LoggerScopeName, LogImpl, Logger } from './types';
+import { ScopeLogger, LoggerScopeName, LoggerLabelName, LogImpl, Logger } from './types';
 
 const isPrimitive = (value: unknown): boolean => {
   const type = typeof value;
@@ -10,6 +10,10 @@ const isSet = (value: any): value is Set<any> => value instanceof Set;
 
 const getScopeName = (context: LoggerScopeName = ''): string => {
   return typeof context === 'function' ? context.name : context;
+};
+
+const getLabelName = (context: LoggerLabelName): string => {
+  return `[ ${getScopeName(context)} ]`;
 };
 
 const scopeLogger: ScopeLogger = (callback, name = 'Scope', { nameStyle } = {}) => {
@@ -50,6 +54,7 @@ const logger: Logger = (data, options = {}) => {
     excludeByType = [],
     reversed = false,
     dividerChar = reversed ? '⬅' : '⮕',
+    label,
 
     debug = false,
 
@@ -84,7 +89,8 @@ const logger: Logger = (data, options = {}) => {
         acc.push(firstLineBreakValue, value, ` ${dividerChar} ${key}`);
       } else {
         const keyName = formatted ? key.padEnd(maxKeyLength, ' ') : key;
-        acc.push(`${firstLineBreakValue}${keyName} ${dividerChar} `, value);
+        const _label = label ? `${getLabelName(label)} ` : '';
+        acc.push(`${_label}${firstLineBreakValue}${keyName} ${dividerChar} `, value);
       }
     }
     return acc;

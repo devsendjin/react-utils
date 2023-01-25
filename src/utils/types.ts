@@ -1,5 +1,5 @@
 type LoggerScopeOptions = { nameStyle?: string };
-export type ScopeLogger = (callback: any, name?: string, options?: LoggerScopeOptions) => void;
+export type ScopeLogger = (callback: () => void, name?: string, options?: LoggerScopeOptions) => void;
 
 export type LogWithLabel = (data: unknown[], label?: LoggerScopeName) => void;
 
@@ -11,6 +11,9 @@ export type LogImpl = (
 type Primitive = string | number | bigint | boolean | symbol | null | undefined;
 type LoggerData = Primitive | Array<any> | Map<any, any> | {};
 export type LoggerScopeName = string | Function;
+
+export type LoggerLabelName = string | Function;
+
 type LoggerOptions = {
   // logger related params
   formatted?: boolean;
@@ -19,6 +22,7 @@ type LoggerOptions = {
   excludeByType?: string[];
   dividerChar?: string;
   reversed?: boolean;
+  label?: LoggerLabelName;
 
   // scope related params
   scope?: LoggerScopeName;

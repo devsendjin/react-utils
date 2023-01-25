@@ -3,26 +3,26 @@ import { logger, excludeFunctionLogger } from './utils';
 import { Debug, debugImplelentation } from './ReactDebug';
 
 // react Debug component
-window.debug = debugImplelentation;
+window._debug = debugImplelentation;
 
-// debug utils
-window.l = logger;
-window.dl = excludeFunctionLogger;
+// _debug utils
+window._l = logger;
+window._dl = excludeFunctionLogger;
 
 declare global {
-  // debug utils
-  const l: Logger;
-  const dl: Logger;
+  // _debug utils
+  const _l: Logger;
+  const _dl: Logger;
 
   interface Window {
-    l: Logger;
-    dl: Logger;
+    _l: Logger;
+    _dl: Logger;
   }
 
   // react Debug component
-  const debug: typeof debugImplelentation;
+  const _debug: typeof debugImplelentation;
   interface Window {
-    debug: typeof debugImplelentation;
+    _debug: typeof debugImplelentation;
   }
 }
 
