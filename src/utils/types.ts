@@ -17,6 +17,7 @@ export type LoggerLabelName = string | Function;
 type LoggerOptions = {
   // logger related params
   formatted?: boolean;
+  alignToDivider?: boolean;
   excludeByKey?: string[];
   excludeByValue?: any[];
   excludeByType?: string[];

@@ -12,6 +12,7 @@ export declare type LoggerScopeName = string | Function;
 export declare type LoggerLabelName = string | Function;
 declare type LoggerOptions = {
     formatted?: boolean;
+    alignToDivider?: boolean;
     excludeByKey?: string[];
     excludeByValue?: any[];
     excludeByType?: string[];

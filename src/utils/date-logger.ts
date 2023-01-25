@@ -1,4 +1,4 @@
-import dayjs, { ConfigType } from 'dayjs'
+import dayjs, { ConfigType } from 'dayjs';
 import { getLabelName } from './logger';
 import { LoggerLabelName } from './types';
 
@@ -7,29 +7,32 @@ type Dayjs = typeof dayjs;
 type LogDateArgument = ConfigType;
 
 enum LogDateFormats {
-  FULL = "YYYY-MM-DD HH:mm:ss",
-  DATE = "YYYY-MM-DD",
-  TIME = "HH:mm:ss",
-  YEAR = "YYYY",
-  MONTH = "MM",
-  DAY = "DD",
-  HOURS = "HH",
-  MINUTES = "mm",
-  SECODS = "ss",
+  FULL = 'YYYY-MM-DD HH:mm:ss',
+  DATE = 'YYYY-MM-DD',
+  TIME = 'HH:mm:ss',
+  YEAR = 'YYYY',
+  MONTH = 'MM',
+  DAY = 'DD',
+  HOURS = 'HH',
+  MINUTES = 'mm',
+  SECODS = 'ss',
 }
+
+type Autocompletable<TargetType, T extends string | number = string> = TargetType | (T & {});
 
 type LogDateOptions = {
   label?: LoggerLabelName;
-  format?: LogDateFormats;
-  behavior?: 'log' | 'return'
-}
+  format?: Autocompletable<LogDateFormats>;
+  behavior?: 'log' | 'return';
+};
 
-type LogDate = (date: LogDateArgument, options?: LogDateOptions) => string | void;
-type LogDateWithFormats = LogDate & Record<keyof typeof LogDateFormats, LogDateFormats>
+type LogDate = ((date: LogDateArgument, options?: LogDateOptions) => string | void) & {
+  formats: typeof LogDateFormats;
+};
 
-const logDate: LogDate = (date, { label, format = LogDateFormats.FULL, behavior =  'log' } =  {}) => {
-  const dateToLog = dayjs(date).format(format)
-  const _label = label ? `${getLabelName(label)} ` : ''
+const logDate: LogDate = (date, { label, format = LogDateFormats.FULL, behavior = 'log' } = {}) => {
+  const dateToLog = dayjs(date).format(format);
+  const _label = label ? `${getLabelName(label)} ` : '';
 
   const logValue = `${_label}${dateToLog}`;
 
@@ -38,23 +41,15 @@ const logDate: LogDate = (date, { label, format = LogDateFormats.FULL, behavior 
   console.log(`${_label}${dateToLog}`);
 
   return;
-}
+};
+
+logDate.formats = LogDateFormats;
 
 const getDate: LogDate = (date, options) => {
-  return logDate(date, {...options, behavior: 'return'})
-}
+  return logDate(date, { ...options, behavior: 'return' });
+};
 
-const injectDateFormats = (func: LogDate) => {
-  Object.entries(LogDateFormats).forEach(([key, value]) => {
-    func[key] = value;
-  })
-}
+getDate.formats = LogDateFormats;
 
-injectDateFormats(logDate);
-injectDateFormats(getDate);
-
-const logDateWithFormats = logDate as LogDateWithFormats;
-const getDateWithFormats = getDate as LogDateWithFormats;
-
-export type { LogDateArgument, LogDateWithFormats, Dayjs }
-export { logDateWithFormats, getDateWithFormats, getDate, dayjs }
+export type { LogDateArgument, LogDate, Dayjs };
+export { logDate, getDate, dayjs };

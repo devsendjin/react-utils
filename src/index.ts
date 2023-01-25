@@ -1,7 +1,7 @@
 import { Logger } from './utils/types';
 import { logger, excludeFunctionLogger } from './utils/logger';
 import { Debug, debugImplelentation } from './ReactDebug';
-import { LogDateWithFormats, logDateWithFormats, getDateWithFormats, dayjs, Dayjs } from './utils/date-logger';
+import { logDate, getDate, dayjs, LogDate, Dayjs } from './utils/date-logger';
 
 // react Debug component
 window._debug = debugImplelentation;
@@ -9,8 +9,8 @@ window._debug = debugImplelentation;
 // _debug utils
 window._l = logger;
 window._dl = excludeFunctionLogger;
-window._ldate = logDateWithFormats;
-window._gdate = getDateWithFormats;
+window._ldate = logDate;
+window._gdate = getDate;
 window._dayjs = dayjs;
 
 declare global {
@@ -18,16 +18,16 @@ declare global {
   const _l: Logger;
   const _dl: Logger;
 
-  const _ldate: LogDateWithFormats;
-  const _gdate: LogDateWithFormats;
+  const _ldate: LogDate;
+  const _gdate: LogDate;
   const _dayjs: Dayjs;
 
   interface Window {
     _l: Logger;
     _dl: Logger;
 
-    _ldate: LogDateWithFormats;
-    _gdate: LogDateWithFormats;
+    _ldate: LogDate;
+    _gdate: LogDate;
     _dayjs: Dayjs;
   }
 

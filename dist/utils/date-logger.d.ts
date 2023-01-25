@@ -13,15 +13,16 @@ declare enum LogDateFormats {
     MINUTES = "mm",
     SECODS = "ss"
 }
+declare type Autocompletable<TargetType, T extends string | number = string> = TargetType | (T & {});
 declare type LogDateOptions = {
     label?: LoggerLabelName;
-    format?: LogDateFormats;
+    format?: Autocompletable<LogDateFormats>;
     behavior?: 'log' | 'return';
 };
-declare type LogDate = (date: LogDateArgument, options?: LogDateOptions) => string | void;
-declare type LogDateWithFormats = LogDate & Record<keyof typeof LogDateFormats, LogDateFormats>;
+declare type LogDate = ((date: LogDateArgument, options?: LogDateOptions) => string | void) & {
+    formats: typeof LogDateFormats;
+};
+declare const logDate: LogDate;
 declare const getDate: LogDate;
-declare const logDateWithFormats: LogDateWithFormats;
-declare const getDateWithFormats: LogDateWithFormats;
-export type { LogDateArgument, LogDateWithFormats, Dayjs };
-export { logDateWithFormats, getDateWithFormats, getDate, dayjs };
+export type { LogDateArgument, LogDate, Dayjs };
+export { logDate, getDate, dayjs };

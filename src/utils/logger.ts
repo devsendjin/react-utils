@@ -49,6 +49,7 @@ const logImplementation: LogImpl = (data: unknown[], { scope, scopeCallback, sco
 const logger: Logger = (data, options = {}) => {
   const {
     formatted = true,
+    alignToDivider = false,
     excludeByKey = [],
     excludeByValue = [],
     excludeByType = [],
@@ -74,23 +75,38 @@ const logger: Logger = (data, options = {}) => {
     return a.length > b.length ? a : b;
   }, '');
 
+  // const maxLengthValueName = Object.values(data)
+  //   .filter((v) => typeof v !== 'function')
+  //   .reduce((a, b) => {
+  //     return String(a).length > String(b).length ? a : b;
+  //   }, '');
+
+  // const minLengthKeyName = keys.reduce((a, b) => {
+  //   return a.length < b.length ? a : b;
+  // }, keys.length ? keys[0] : '');
+
   const maxKeyLength = maxLengthKeyName.length;
 
   const isExcludedType = (value: unknown) => excludeByType.includes(typeof value);
   const isExcludedKey = (key: string) => excludeByKey.some((excludedkey) => excludedkey === key);
   const isExcludedValue = (value: unknown) => excludeByValue.some((excludedValue) => excludedValue === value);
 
-  const logArgsFromObj = Object.entries(data).reduce<unknown[]>((acc, [key, value], index) => {
+  let isFirstArgsElementPassed = false;
+  const logArgsFromObj = Object.entries(data).reduce<unknown[]>((acc, [key, value]) => {
     if (!isExcludedType(value) && !isExcludedKey(value) && !isExcludedValue(key)) {
-      const withFirstElementLineBreak = index === 0;
-      const firstLineBreakValue = withFirstElementLineBreak ? '' : '\n';
+      const firstLineBreakValue = isFirstArgsElementPassed ? '\n' : '';
+      isFirstArgsElementPassed = true;
+
+      const _label = label ? (reversed ? ` ${getLabelName(label)}` : `${getLabelName(label)} `) : '';
 
       if (reversed) {
-        acc.push(firstLineBreakValue, value, ` ${dividerChar} ${key}`);
+        acc.push(firstLineBreakValue, value, ` ${dividerChar} ${key}${_label}`);
       } else {
-        const keyName = formatted ? key.padEnd(maxKeyLength, ' ') : key;
-        const _label = label ? `${getLabelName(label)} ` : '';
-        acc.push(`${_label}${firstLineBreakValue}${keyName} ${dividerChar} `, value);
+        const padMethod: typeof String.prototype.padEnd | typeof String.prototype.padStart = alignToDivider
+          ? String.prototype.padStart.bind(key)
+          : String.prototype.padEnd.bind(key);
+        const keyName = formatted ? padMethod(maxKeyLength) : key;
+        acc.push(firstLineBreakValue, `${_label}${keyName} ${dividerChar} `, value);
       }
     }
     return acc;
