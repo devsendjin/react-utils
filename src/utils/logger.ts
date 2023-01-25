@@ -117,4 +117,4 @@ const excludeFunctionLogger: Logger = (data, options) => {
   logger(data, { excludeByType: ['function'], ...options });
 };
 
-export { logger, excludeFunctionLogger };
+export { logger, excludeFunctionLogger, getLabelName };
