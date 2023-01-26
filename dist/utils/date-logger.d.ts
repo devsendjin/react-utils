@@ -1,5 +1,6 @@
 import dayjs, { ConfigType } from 'dayjs';
 import { LoggerLabelName } from './types';
+import { Timezones } from './constants';
 declare type Dayjs = typeof dayjs;
 declare type LogDateArgument = ConfigType;
 declare enum LogDateFormats {
@@ -21,6 +22,7 @@ declare type LogDateOptions = {
 };
 declare type LogDate = ((date: LogDateArgument, options?: LogDateOptions) => string | void) & {
     formats: typeof LogDateFormats;
+    timezones: typeof Timezones;
 };
 declare const logDate: LogDate;
 declare const getDate: LogDate;

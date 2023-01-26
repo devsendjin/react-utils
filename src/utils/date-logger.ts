@@ -3,6 +3,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { getLabelName } from './logger';
 import { LoggerLabelName } from './types';
+import { Timezones } from './constants';
 
 dayjs.extend(utc);
 dayjs.extend(timezone); // dependent on utc plugin
@@ -32,6 +33,7 @@ type LogDateOptions = {
 
 type LogDate = ((date: LogDateArgument, options?: LogDateOptions) => string | void) & {
   formats: typeof LogDateFormats;
+  timezones: typeof Timezones;
 };
 
 const logDate: LogDate = (date, { label, format = LogDateFormats.FULL, behavior = 'log' } = {}) => {
@@ -48,12 +50,14 @@ const logDate: LogDate = (date, { label, format = LogDateFormats.FULL, behavior 
 };
 
 logDate.formats = LogDateFormats;
+logDate.timezones = Timezones;
 
 const getDate: LogDate = (date, options) => {
   return logDate(date, { ...options, behavior: 'return' });
 };
 
 getDate.formats = LogDateFormats;
+getDate.timezones = Timezones;
 
 export type { LogDateArgument, LogDate, Dayjs };
 export { logDate, getDate, dayjs };
