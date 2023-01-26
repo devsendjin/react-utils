@@ -1,9 +1,13 @@
 import dayjs, { ConfigType } from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { getLabelName } from './logger';
 import { LoggerLabelName } from './types';
 
-type Dayjs = typeof dayjs;
+dayjs.extend(utc);
+dayjs.extend(timezone); // dependent on utc plugin
 
+type Dayjs = typeof dayjs;
 type LogDateArgument = ConfigType;
 
 enum LogDateFormats {
