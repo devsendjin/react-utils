@@ -6,7 +6,7 @@ module.exports = {
   requirePragma: false,
   proseWrap: "preserve",
   trailingComma: "es5",
-  singleQuote: true,
+  singleQuote: false,
   printWidth: 120,
   // below line only for windows users facing CLRF and eslint/prettier error
   // non windows users feel free to delete it

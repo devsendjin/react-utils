@@ -1,22 +1,22 @@
-import { ScopeLogger, LoggerScopeName, LoggerLabelName, LogImpl, Logger } from './types';
+import { ScopeLogger, LoggerScopeName, LoggerLabelName, LogImpl, Logger } from "./types";
 
 const isPrimitive = (value: unknown): boolean => {
   const type = typeof value;
-  return value == null || (type != 'object' && type != 'function');
+  return value == null || (type != "object" && type != "function");
 };
 
 const isMap = (value: any): value is Map<any, any> => value instanceof Map;
 const isSet = (value: any): value is Set<any> => value instanceof Set;
 
-const getScopeName = (context: LoggerScopeName = ''): string => {
-  return typeof context === 'function' ? context.name : context;
+const getScopeName = (context: LoggerScopeName = ""): string => {
+  return typeof context === "function" ? context.name : context;
 };
 
 const getLabelName = (context: LoggerLabelName): string => {
   return `[ ${getScopeName(context)} ]`;
 };
 
-const scopeLogger: ScopeLogger = (callback, name = 'Scope', { nameStyle } = {}) => {
+const scopeLogger: ScopeLogger = (callback, name = "Scope", { nameStyle } = {}) => {
   const consoleGroupArgs = nameStyle ? [`%c${name}`, nameStyle] : [name];
   if (nameStyle) {
     console.group(...consoleGroupArgs);
@@ -54,12 +54,12 @@ const logger: Logger = (data, options = {}) => {
     excludeByValue = [],
     excludeByType = [],
     reversed = false,
-    dividerChar = reversed ? '⬅' : '⮕',
+    dividerChar = reversed ? "⬅" : "⮕",
     label,
 
     debug = false,
 
-    scope = '',
+    scope = "",
     scopeCallback,
     scopeOptions,
   } = options;
@@ -73,7 +73,7 @@ const logger: Logger = (data, options = {}) => {
 
   const maxLengthKeyName = Object.keys(data).reduce((a, b) => {
     return a.length > b.length ? a : b;
-  }, '');
+  }, "");
 
   // const maxLengthValueName = Object.values(data)
   //   .filter((v) => typeof v !== 'function')
@@ -94,10 +94,10 @@ const logger: Logger = (data, options = {}) => {
   let isFirstArgsElementPassed = false;
   const logArgsFromObj = Object.entries(data).reduce<unknown[]>((acc, [key, value]) => {
     if (!isExcludedType(value) && !isExcludedKey(value) && !isExcludedValue(key)) {
-      const firstLineBreakValue = isFirstArgsElementPassed ? '\n' : '';
+      const firstLineBreakValue = isFirstArgsElementPassed ? "\n" : "";
       isFirstArgsElementPassed = true;
 
-      const _label = label ? (reversed ? ` ${getLabelName(label)}` : `${getLabelName(label)} `) : '';
+      const _label = label ? (reversed ? ` ${getLabelName(label)}` : `${getLabelName(label)} `) : "";
 
       if (reversed) {
         acc.push(firstLineBreakValue, value, ` ${dividerChar} ${key}${_label}`);
@@ -117,8 +117,8 @@ const logger: Logger = (data, options = {}) => {
       scope,
       scopeCallback: (...scopeCallbackParams) => {
         logImplementation([{ options }], {
-          scope: scope ? `[${scope}] debug info:` : 'Scope debug info',
-          scopeOptions: { nameStyle: 'color: yellow;' },
+          scope: scope ? `[${scope}] debug info:` : "Scope debug info",
+          scopeOptions: { nameStyle: "color: yellow;" },
         });
         scopeCallback?.(...scopeCallbackParams);
       },
@@ -130,7 +130,7 @@ const logger: Logger = (data, options = {}) => {
 };
 
 const excludeFunctionLogger: Logger = (data, options) => {
-  logger(data, { excludeByType: ['function'], ...options });
+  logger(data, { excludeByType: ["function"], ...options });
 };
 
 export { logger, excludeFunctionLogger, getLabelName };

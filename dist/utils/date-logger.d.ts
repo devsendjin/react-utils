@@ -1,6 +1,6 @@
-import dayjs, { ConfigType } from 'dayjs';
-import { LoggerLabelName } from './types';
-import { Timezones } from './constants';
+import dayjs, { ConfigType } from "dayjs";
+import { LoggerLabelName } from "./types";
+import { Timezones } from "./constants";
 declare type Dayjs = typeof dayjs;
 declare type LogDateArgument = ConfigType;
 declare enum LogDateFormats {
@@ -18,7 +18,7 @@ declare type Autocompletable<TargetType, T extends string | number = string> = T
 declare type LogDateOptions = {
     label?: LoggerLabelName;
     format?: Autocompletable<LogDateFormats>;
-    behavior?: 'log' | 'return';
+    behavior?: "log" | "return";
 };
 declare type LogDate = ((date: LogDateArgument, options?: LogDateOptions) => string | void) & {
     formats: typeof LogDateFormats;

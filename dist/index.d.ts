@@ -1,6 +1,6 @@
-import { Logger } from './utils/types';
-import { Debug, debugImplelentation } from './ReactDebug';
-import { LogDate, Dayjs } from './utils/date-logger';
+import { Logger } from "./utils/types";
+import { Debug, debugImplelentation } from "./ReactDebug";
+import { LogDate, Dayjs } from "./utils/date-logger";
 declare global {
     const _l: Logger;
     const _dl: Logger;

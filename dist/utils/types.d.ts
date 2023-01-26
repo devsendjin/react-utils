@@ -3,7 +3,7 @@ declare type LoggerScopeOptions = {
 };
 export declare type ScopeLogger = (callback: () => void, name?: string, options?: LoggerScopeOptions) => void;
 export declare type LogWithLabel = (data: unknown[], label?: LoggerScopeName) => void;
-export declare type LogImpl = (data: unknown[], options: Pick<LoggerOptions, 'scope' | 'scopeCallback'> & {
+export declare type LogImpl = (data: unknown[], options: Pick<LoggerOptions, "scope" | "scopeCallback"> & {
     scopeOptions?: LoggerScopeOptions;
 }) => void;
 declare type Primitive = string | number | bigint | boolean | symbol | null | undefined;

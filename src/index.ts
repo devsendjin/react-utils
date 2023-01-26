@@ -1,7 +1,7 @@
-import { Logger } from './utils/types';
-import { logger, excludeFunctionLogger } from './utils/logger';
-import { Debug, debugImplelentation } from './ReactDebug';
-import { logDate, getDate, dayjs, LogDate, Dayjs } from './utils/date-logger';
+import { Logger } from "./utils/types";
+import { logger, excludeFunctionLogger } from "./utils/logger";
+import { Debug, debugImplelentation } from "./ReactDebug";
+import { logDate, getDate, dayjs, LogDate, Dayjs } from "./utils/date-logger";
 
 // react Debug component
 window._debug = debugImplelentation;

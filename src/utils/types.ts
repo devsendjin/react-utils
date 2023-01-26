@@ -5,7 +5,7 @@ export type LogWithLabel = (data: unknown[], label?: LoggerScopeName) => void;
 
 export type LogImpl = (
   data: unknown[],
-  options: Pick<LoggerOptions, 'scope' | 'scopeCallback'> & { scopeOptions?: LoggerScopeOptions }
+  options: Pick<LoggerOptions, "scope" | "scopeCallback"> & { scopeOptions?: LoggerScopeOptions }
 ) => void;
 
 type Primitive = string | number | bigint | boolean | symbol | null | undefined;
