@@ -2,6 +2,10 @@ import { Logger } from "./utils/types";
 import { logger, excludeFunctionLogger } from "./utils/logger";
 import { Debug, debugImplelentation } from "./ReactDebug";
 import { logDate, getDate, dayjs, LogDate, Dayjs } from "./utils/date-logger";
+import { useConsoleClear } from "./hooks/useConsoleClear";
+
+// react hooks
+window._useConsoleClear = useConsoleClear;
 
 // react Debug component
 window._debug = debugImplelentation;
@@ -36,6 +40,12 @@ declare global {
   interface Window {
     _debug: typeof debugImplelentation;
   }
+
+  // react hooks
+  const _useConsoleClear: typeof useConsoleClear;
+  interface Window {
+    _useConsoleClear: typeof useConsoleClear;
+  }
 }
 
-export { Debug };
+export { Debug, useConsoleClear };

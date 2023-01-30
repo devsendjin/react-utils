@@ -1,6 +1,7 @@
 import { Logger } from "./utils/types";
 import { Debug, debugImplelentation } from "./ReactDebug";
 import { LogDate, Dayjs } from "./utils/date-logger";
+import { useConsoleClear } from "./hooks/useConsoleClear";
 declare global {
     const _l: Logger;
     const _dl: Logger;
@@ -18,5 +19,9 @@ declare global {
     interface Window {
         _debug: typeof debugImplelentation;
     }
+    const _useConsoleClear: typeof useConsoleClear;
+    interface Window {
+        _useConsoleClear: typeof useConsoleClear;
+    }
 }
-export { Debug };
+export { Debug, useConsoleClear };
